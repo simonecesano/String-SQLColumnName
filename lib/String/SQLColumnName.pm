@@ -4,7 +4,7 @@ package String::SQLColumnName;
 
 # ABSTRACT: Fix strings into valid SQL column names
 
-our $VERSION = '0.01'; # VERSION
+our $VERSION = '0.02'; # VERSION
  
 use 5.010001;
 use strict;
@@ -828,6 +828,7 @@ our %rw = (
 
 sub fix_chars {
     my $w = shift;
+    # print STDERR "Before: $w";
     for ($w) {
 	s/^\s+|\s+$//g;
 	
@@ -841,10 +842,13 @@ sub fix_chars {
 	
 	s/\-/_/g;
 	s/\s/_/g;
+	s/\://g;
+
+	s/[()\'\.\"\:\;\,]+//g;
+
+	s/\W/_/g;
 	s/__+/_/g;
-	
-	s/[()\'\.\"]//g;
-	
+	    
 	s/^_//g;
 	
 	$_ = lc;
